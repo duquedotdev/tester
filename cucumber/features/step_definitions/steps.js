@@ -1,12 +1,21 @@
 const { Given, When, Then } = require('cucumber');
+const { assertThat, is } = require('hamjest');
+const Person = require('../../src/app/shouty');
 
-Given('Lucy is located {int} meters from Sean', function(distance) {
-  console.log(distance);
-  return 'pending';
+Given('{person} is located/standing {int} meter(s) from Sean', function(
+  lucy,
+  distance
+) {
+  this.lucy = new Person();
+  this.sean = new Person();
+  this.lucy.moveTo(distance);
 });
-When('Sean shouts {string}', function(string) {
-  return 'pending';
+
+When('Sean shouts {string}', function(message) {
+  this.sean.shout(message);
+  this.message = message;
 });
+
 Then("Lucy hears Sean's message", function() {
-  return 'pending';
+  assertThat(this.lucy.messageHeard(), is([this.message]));
 });
